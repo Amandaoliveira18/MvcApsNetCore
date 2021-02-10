@@ -12,9 +12,9 @@ namespace SalesWebMvc.Controllers
 {
     public class DepartamentsController : Controller
     {
-        private readonly SalesWebMvcContext _context;
+        private readonly SalesWebMvcContext _context; //já tem dependencia com a classe SalesWebContext
 
-        public DepartamentsController(SalesWebMvcContext context)
+        public DepartamentsController(SalesWebMvcContext context) //construtor com a injeção de dependencia
         {
             _context = context;
         }
