@@ -38,5 +38,27 @@ namespace SalesWebMvc.Controllers
             _sellerService.Insert(seller);//Fiz a inserção
             return RedirectToAction(nameof(Index)); //Para redirecionar a minha requisição para o inddex 
         }
+        public IActionResult Delete(int? id) //o metódo vai recebr o argumento id, mas de forma opcional, isso é indicado pelo ponto de interrogação
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var obj = _sellerService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
+    
 }
