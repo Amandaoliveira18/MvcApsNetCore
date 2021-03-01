@@ -23,6 +23,7 @@ namespace SalesWebMvc.Services
 
         public void Insert(Seller obj)
         {
+            obj.Department = _context.Department.First(); //Coloc o primeiro id do department
             _context.Add(obj);//faz a adição
             _context.SaveChanges();//salva o insert, ou a alteração no BD
 
