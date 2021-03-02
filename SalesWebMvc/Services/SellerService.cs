@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SalesWebMvc.Services.Exceptions;
+
 namespace SalesWebMvc.Services
 {
     public class SellerService
@@ -36,6 +38,25 @@ namespace SalesWebMvc.Services
             var obj = _context.Seller.Find(id);
             _context.Seller.Remove(obj);
             _context.SaveChanges();
+        }
+
+        public void Update(Seller obj)
+        {
+            if(!_context.Seller.Any(x => x.Id == obj.Id )) //Se não existir algum id no meu DB
+            {
+                throw new NotFoundException("Id not found");
+            }
+
+            try 
+            {
+                _context.Update(obj);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e) //pode ocorrer uma exceção do entity framework, no momento de realizar o update do dados (nivel de acesso a dados)
+            {
+                throw new DbConcurrencyException(e.Message);//exceção nivel de serviço, segragando a camadas, a camaada de serviço é con
+            }
+                    
         }
     }
 }
